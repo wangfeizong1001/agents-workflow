@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 1.1.30
+      - name: 安装依赖
+        run: bun install --frozen-lockfile
+      - name: 代码风格
+        run: bun run lint
+      - name: 类型检查
+        run: bun run typecheck
+      - name: 单元与集成测试
+        run: bun run test
+      - name: 构建产物
+        run: bun run build
+      - name: 上传覆盖率
+        if: matrix.os == 'ubuntu-latest' && github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/

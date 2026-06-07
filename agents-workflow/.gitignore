@@ -1,0 +1,11 @@
+node_modules
+dist
+coverage
+.yunshou
+*.log
+.DS_Store
+.vscode
+.idea
+bun.lockb
+.tsbuildinfo
+*.tsbuildinfo

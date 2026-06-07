@@ -1,3 +1,16 @@
+// 云枢 Task 子系统 —— 任务依赖图分析。
+//
+// 提供三个工具函数:
+//   topologicalSort  Kahn BFS 拓扑排序,环存在时抛 PLAN_DAG_CYCLE
+//   detectCycle      三色 DFS 返回首个环路径,无环返空数组
+//   readyTasks       过滤 status=ready 且所有依赖已 done 的任务
+//
+// 选型: Kahn 排序副产品即可判环(出队数 < 顶点数即有环),O(V+E);
+//       三色 DFS 比两色多一状态(灰=在栈),可返回具体环路径供错误信息使用。
+//
+// 复用关系: topologicalSort 内部异常路径会二次调用 detectCycle 以拿到
+// 具体环路径,Kahn 仅能判"有环",无法给出路径;环是异常路径,常态为 O(V+E) 一次。
+
 import { YunShouError, YSErrorCode } from "../shared/errors.js";
 import type { Task } from "./types.js";
 

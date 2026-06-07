@@ -53,18 +53,26 @@ describe("Logger", () => {
     expect(parsed.requestId).toBe("r-1");
   });
 
-  it("所有 LogLevel 等级在表中必须被定义", () => {
-    const levels: readonly LogLevel[] = ["debug", "info", "warn", "error"];
-    for (const lv of levels) {
-      const log = createLogger({ level: lv });
+  it("所有 LogLevel 等级必须可正确输出 JSON 行且 level 字段值正确", () => {
+    const cases: ReadonlyArray<{ level: LogLevel; emitted: readonly LogLevel[] }> = [
+      { level: "debug", emitted: ["debug", "info", "warn", "error"] },
+      { level: "info", emitted: ["info", "warn", "error"] },
+      { level: "warn", emitted: ["warn", "error"] },
+      { level: "error", emitted: ["error"] },
+    ];
+    for (const { level, emitted } of cases) {
+      stderrSpy.mockClear();
+      const log = createLogger({ level });
       log.debug("d");
       log.info("i");
       log.warn("w");
       log.error("e", new Error("x"));
-      const parsed = JSON.parse(
-        String(stderrSpy.mock.calls.at(-1)?.[0] ?? "").trim(),
-      ) as { level: string };
-      expect(parsed.level).toBeDefined();
+      expect(stderrSpy.mock.calls).toHaveLength(emitted.length);
+      for (let i = 0; i < emitted.length; i++) {
+        const out = String(stderrSpy.mock.calls[i]?.[0] ?? "");
+        const parsed = JSON.parse(out.trim()) as { level: string };
+        expect(parsed.level).toBe(emitted[i]);
+      }
     }
   });
 });

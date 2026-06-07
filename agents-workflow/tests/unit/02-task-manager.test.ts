@@ -57,4 +57,47 @@ describe("TaskManager", () => {
     expect(out).toMatch(/T2/);
     expect(out).toMatch(/BACKLOG/);
   });
+
+  // 关键契约补强: plan 13.1 给的 5 个测试全是快乐路径,以下分支需要锁定。
+
+  it("create 重复 id 必须抛 YunShouError (UNKNOWN 兜底,见 plan 13.2 缺陷)", () => {
+    const tm = new TaskManager(join(dir, "tasks.yaml"));
+    tm.create({ id: "T1", title: "a", priority: "P1" });
+    expect(() => tm.create({ id: "T1", title: "dup", priority: "P1" })).toThrow(
+      YunShouError,
+    );
+  });
+
+  it("transition 不存在的 id 必须抛 YunShouError", () => {
+    const tm = new TaskManager(join(dir, "tasks.yaml"));
+    expect(() => tm.transition("不存在的ID", "ready")).toThrow(YunShouError);
+  });
+
+  it("transition 到 in_progress 必须自动写 startedAt 时间戳", () => {
+    const tm = new TaskManager(join(dir, "tasks.yaml"));
+    tm.create({ id: "T1", title: "a", priority: "P1" });
+    tm.transition("T1", "ready");
+    const updated = tm.transition("T1", "in_progress");
+    expect(updated.startedAt).toBeDefined();
+    // ISO 8601 格式粗校验: 长度 24 字符 + 'T' + 'Z'
+    expect(updated.startedAt).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
+  });
+
+  it("transition 到 done 必须自动写 completedAt 时间戳", () => {
+    const tm = new TaskManager(join(dir, "tasks.yaml"));
+    tm.create({ id: "T1", title: "a", priority: "P1" });
+    tm.transition("T1", "ready");
+    tm.transition("T1", "in_progress");
+    const updated = tm.transition("T1", "review");
+    const done = tm.transition("T1", "done");
+    expect(done.completedAt).toBeDefined();
+    expect(done.completedAt).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
+    // 验证 done 不会清掉 startedAt
+    expect(done.startedAt).toBe(updated.startedAt);
+  });
+
+  it("renderDashboard 空任务列表必须仅输出标题", () => {
+    const out = renderDashboard([]);
+    expect(out).toBe("# 任务仪表盘\n");
+  });
 });

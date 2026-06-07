@@ -1,7 +1,16 @@
-// 云枢 Task 子系统 —— TaskManager 实现。
+// 云枢 Task 子系统 —— YAML 持久化的 TaskManager 与文本仪表盘。
 //
-// 提供基于 YAML 的任务持久化(create/list/transition),
-// 依赖 ./state-machine.canTransition 做合法性校验,非法转移抛 YunShouError。
+// TaskManager: 封装 tasks.yaml 的读写,提供 list/create/transition 三个公共方法。
+//   - create 生成 backlog 状态任务,id 重复抛 YunShouError(plan 13.2 用 UNKNOWN 兜底)
+//   - transition 用 state-machine.canTransition 守卫,非法转移抛 STATE_INVALID_TRANSITION
+//   - transition 自动维护 startedAt(in_progress) / completedAt(done) 时间戳
+//   - 每次操作重读全量 YAML,简单可靠;100+ 任务规模可改增量缓存
+//   - reason 参数当前是 placeholder,未持久化(plan 13.2 缺陷,见 commit 信息)
+//
+// renderDashboard: 按 8 态 BUCKETS 顺序遍历,空桶跳过,输出 Markdown 文本。
+//
+// 持久化格式: { tasks: Task[] } (单层 YAML 容器)
+// 原子写入: writeFileAtomic (阶段 1 任务 7) 保证崩溃一致性
 
 import { writeFileAtomic, readText, fileExists } from "../shared/fs-helpers.js";
 import { readYaml, writeYaml } from "../shared/yaml.js";

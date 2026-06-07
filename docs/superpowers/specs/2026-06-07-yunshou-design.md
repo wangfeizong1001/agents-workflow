@@ -494,21 +494,23 @@ handoff.readLatest(): HandoffData | null
 #### 状态机
 
 ```
-   pending ──start──→ in_progress ──finish──→ review
-      ↑                    │                    │
-      │                    ↓                    ↓
-      │                 blocked            approved
-      │                    │                    │
-      │                    └──unblock──→ in_progress
-      │                                         │
-      └──reset──────────────────────────────────┤
-      │                                         ↓
-      │                                       done
-      │                                         │
-      │                                         ↓
-      └──────────────archive──────────────────→ archived
+   backlog ──refine──→ ready ──start──→ in_progress ──finish──→ review ──approve──→ done
+      │                  │                  │                       │
+      │                  │                  ↓                       ├─fix──→ in_progress
+      │                  │               blocked                    └─fail──→ failed
+      │                  │                  │                          │
+      │                  │                  ├─unblock─→ ready          ├─retry──→ ready
+      │                  │                  └─abort─→ cancelled       └─abort─→ cancelled
+      │                  ↓
+      │              blocked ──unblock──→ ready
+      │                  │
+      │                  └─abort─→ cancelled
+      │
+      ├─cancel─→ cancelled  (任意非终态可主动取消)
+      └─retry──→ ready      (failed 失败态可重试回 ready)
 
-   并行终态: cancelled / failed
+   终态: done / cancelled (双终态,不可再转移)
+   失败态: failed (非终态,可重试或取消)
 ```
 
 #### 存储结构
@@ -532,32 +534,55 @@ handoff.readLatest(): HandoffData | null
 #### 任务数据结构
 
 ```typescript
+// 8 态状态机: backlog / ready / in_progress / blocked / review / done / failed / cancelled
+// 4 级优先级: P0 (critical) / P1 (high) / P2 (medium) / P3 (low)
+// 完整合法转移表见 plan 7.1 节与 v0.1 阶段 2 任务 11 (state-machine.ts)。
+
+export const TaskStatus = {
+  backlog: "backlog",
+  ready: "ready",
+  in_progress: "in_progress",
+  blocked: "blocked",
+  review: "review",
+  done: "done",
+  failed: "failed",
+  cancelled: "cancelled",
+} as const;
+export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus];
+
+export const TaskPriority = {
+  P0: "P0", // critical
+  P1: "P1", // high
+  P2: "P2", // medium
+  P3: "P3", // low
+} as const;
+export type TaskPriority = (typeof TaskPriority)[keyof typeof TaskPriority];
+
 interface Task {
-  id: string                   // T-001, T-002...
+  id: string                          // T-001, T-002... (3 位零填充)
   title: string
-  description: string
-  status: 'pending' | 'in_progress' | 'review' | 'done' 
-        | 'blocked' | 'cancelled' | 'failed' | 'archived'
-  priority: 'urgent' | 'high' | 'medium' | 'low'
-  tags: string[]
-  assignee?: string            // IDE 名 / 用户名 / agent id
-  created: string              // ISO
-  updated: string
-  due?: string
-  estimateMin?: number
-  actualMin?: number
-  dependsOn: string[]          // 阻塞本任务的任务 ID
-  blocks: string[]             // 被本任务阻塞的任务
-  parentId?: string            // 子任务的父任务
-  subtaskIds: string[]
-  checklist: Array<{ id: string, text: string, done: boolean }>
-  spec?: string                // 关联的 spec id
-  plan?: string                // 关联的 plan id
-  artifacts: string[]          // 关联的工作流产物
-  comments: Comment[]
-  activity: ActivityLog[]      // 每次状态变更记录
+  description?: string                // v0.1 简化为可选 (实施时按 plan 7.1 节)
+  status: TaskStatus
+  priority: TaskPriority
+  dependsOn: readonly string[]        // 依赖任务 id 列表;空数组表示无依赖 (按 plan 7.1 节固化为必填字段,允许 [])
+  owner?: string                      // Agent 标识 / IDE 名 / 用户名 (替代早期 spec 草稿中的 "assignee")
+  createdAt: string                   // ISO 8601
+  startedAt?: string                  // ISO 8601, 进入 in_progress 时填写
+  completedAt?: string                // ISO 8601, 进入 done / cancelled / failed 时填写
+  tags?: readonly string[]            // 标签
+  [extra: string]: unknown            // 允许携带任意元数据 (未来扩展),但必须可序列化
+}
+
+interface TaskTransition {
+  taskId: string
+  from: TaskStatus
+  to: TaskStatus
+  ts: string                          // ISO 8601 (按 plan 7.1 节命名,避免与 event.ts 的 "at" 冲突)
+  reason?: string
 }
 ```
+
+> **v0.1 实现说明**: 本 spec 第 6.2 节原始草稿列出了较多任务元数据字段 (assignee / blocks / parentId / subtaskIds / checklist / spec / plan / artifacts / comments / activity / due / estimateMin / actualMin / updated),plan 阶段评估后认为 v0.1 不必全部实现。v0.1 仅保留 plan 7.1 节列出的核心字段,其余字段作为 `[extra: string]: unknown` 索引签名承载,v0.2 再升级为强类型字段。
 
 #### 关键 API
 

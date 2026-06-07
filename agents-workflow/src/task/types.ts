@@ -1,14 +1,38 @@
-export type TaskStatus =
-  | "backlog"
-  | "ready"
-  | "in_progress"
-  | "blocked"
-  | "review"
-  | "done"
-  | "failed"
-  | "cancelled";
+// 云枢 Task 子系统 —— 任务数据形状与状态 / 优先级枚举。
+//
+// 8 态状态机: backlog / ready / in_progress / blocked / review / done / failed / cancelled
+// 4 级优先级: P0 (critical) / P1 (high) / P2 (medium) / P3 (low)
+//
+// 合法转移表 (TaskStatus × TaskStatus) 见 state-machine.ts (阶段 2 任务 11),
+// 本文件仅定义数据形状,不包含任何运行时状态机逻辑。
+//
+// 字段集严格对齐 plan 7.1 节;v0.1 不实现 spec 6.2 节原始草稿的扩展字段
+// (blocks / parentId / checklist / artifacts / comments / activity 等),
+// 改由 [extra: string]: unknown 索引签名承载,见 spec 6.2 节"v0.1 实现说明"。
 
-export type TaskPriority = "P0" | "P1" | "P2" | "P3";
+export const TaskStatus = {
+  backlog: "backlog",
+  ready: "ready",
+  in_progress: "in_progress",
+  blocked: "blocked",
+  review: "review",
+  done: "done",
+  failed: "failed",
+  cancelled: "cancelled",
+} as const;
+export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus];
+
+export const TASK_STATUSES: readonly TaskStatus[] = Object.values(TaskStatus);
+
+export const TaskPriority = {
+  P0: "P0",
+  P1: "P1",
+  P2: "P2",
+  P3: "P3",
+} as const;
+export type TaskPriority = (typeof TaskPriority)[keyof typeof TaskPriority];
+
+export const TASK_PRIORITIES: readonly TaskPriority[] = Object.values(TaskPriority);
 
 export interface Task {
   readonly id: string;
@@ -31,4 +55,5 @@ export interface TaskTransition {
   readonly to: TaskStatus;
   readonly ts: string;
   readonly reason?: string;
+  readonly actor?: string;
 }

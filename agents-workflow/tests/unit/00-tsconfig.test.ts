@@ -28,12 +28,11 @@ describe("TypeScript 与工具链配置", () => {
     expect(cfg.exclude).toContain("vitest.config.ts");
   });
 
-  it("vitest.config.ts 必须配置单线程运行以避免 JSONL 文件竞争", async () => {
-    const cfg = (await import("../../vitest.config.ts" as string)) as {
-      default: { test: { fileParallelism: boolean; pool: string } };
-    };
-    expect(cfg.default.test.fileParallelism).toBe(false);
-    expect(cfg.default.test.pool).toBe("forks");
+  it("vitest.config.ts 必须配置单线程运行以避免 JSONL 文件竞争", () => {
+    const text = readFileSync(join(ROOT, "vitest.config.ts"), "utf-8");
+    expect(text).toMatch(/fileParallelism:\s*false/);
+    expect(text).toMatch(/pool:\s*"forks"/);
+    expect(text).toMatch(/singleFork:\s*true/);
   });
 
   it(".gitignore 必须忽略 dist node_modules coverage .yunshou", () => {

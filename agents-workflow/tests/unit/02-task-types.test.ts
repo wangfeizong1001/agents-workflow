@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest";
 import {
   TASK_STATUSES,
-  TaskStatus,
   TASK_PRIORITIES,
-  TaskPriority,
+  type TaskStatus,
+  type TaskPriority,
   type Task,
   type TaskTransition,
 } from "../../src/task/types.js";

@@ -1,5 +1,4 @@
-import { createLogger as _createLogger, type Logger, type LogLevel } from "./shared/logger.js";
-import type { YunShouError as _YunShouErrorType } from "./shared/errors.js";
+import { createLogger as _createLogger, type Logger } from "./shared/logger.js";
 
 export const VERSION = "0.1.0" as const;
 
@@ -12,5 +11,3 @@ export { StateStore } from "./core/state/store.js";
 export function createLogger(opts?: Parameters<typeof _createLogger>[0]): Logger {
   return _createLogger(opts);
 }
-
-export type YunShouErrorType = _YunShouErrorType;

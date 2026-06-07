@@ -9,5 +9,5 @@ export { appendEvent, readEvents, type StateEvent } from "./core/state/store.js"
 export { StateStore } from "./core/state/store.js";
 
 export function createLogger(opts?: Parameters<typeof _createLogger>[0]): Logger {
-  return _createLogger(opts);
+  return _createLogger(opts ?? { level: "info" });
 }

@@ -70,7 +70,9 @@ class ConsoleLogger implements Logger {
       ...ctx,
     };
     if (err !== undefined) {
-      payload.err =
+      // payload 实际是 Record<string, unknown>,受 noPropertyAccessFromIndexSignature
+      // 约束,err 动态键必须用 [] 访问
+      payload["err"] =
         err instanceof Error
           ? { name: err.name, message: err.message, stack: err.stack }
           : err;

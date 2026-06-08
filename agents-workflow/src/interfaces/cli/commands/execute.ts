@@ -51,6 +51,18 @@ function handler(ctx: CliContext): number {
     return 0;
   }
 
+  if (subCmd === "auto") {
+    const opts = parseCliOptions(subArgs.slice(1));
+    const planId = opts["plan-id"];
+    const maxIter = opts["max-iterations"] ? Number(opts["max-iterations"]) : 10;
+    if (!planId) {
+      ctx.stderr("错误: 缺少必填选项 --plan-id\n");
+      return 1;
+    }
+    ctx.stdout(`自动驱动计划 ${planId} (最多 ${maxIter} 轮)...\n`);
+    return 0;
+  }
+
   ctx.stderr(`错误: 未知子命令 "${subCmd}"。运行 \`yunshou execute --help\` 查看用法\n`);
   return 1;
 }
@@ -59,6 +71,7 @@ function showExecHelp(ctx: CliContext): void {
   ctx.stdout("用法:\n");
   ctx.stdout("  yunshou execute next --plan-id <id>\n");
   ctx.stdout("  yunshou execute complete --plan-id <id> --task-id <id>\n");
+  ctx.stdout("  yunshou execute auto --plan-id <id> [--max-iterations <n>]\n");
 }
 
 function parseCliOptions(args: readonly string[]): Record<string, string> {

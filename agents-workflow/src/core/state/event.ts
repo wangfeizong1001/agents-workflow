@@ -6,6 +6,7 @@ export type StateEventType =
   | "spec.quality.passed"
   | "spec.quality.failed"
   | "plan.created"
+  | "plan.phase.changed"
   | "plan.task.added"
   | "plan.task.started"
   | "plan.task.completed"

@@ -21,6 +21,8 @@ import { Command } from "commander";
 import { initCommand } from "./commands/init.js";
 import { statusCommand } from "./commands/status.js";
 import { specCommand } from "./commands/spec.js";
+import { planCommand } from "./commands/plan.js";
+import { executeCommand } from "./commands/execute.js";
 import type { CliContext } from "./types.js";
 import { EXIT_OK } from "./types.js";
 import { VERSION } from "../../index.js";
@@ -32,6 +34,8 @@ const COMMANDS = {
   [initCommand.name]: initCommand,
   [statusCommand.name]: statusCommand,
   [specCommand.name]: specCommand,
+  [planCommand.name]: planCommand,
+  [executeCommand.name]: executeCommand,
 } as const;
 type CommandName = keyof typeof COMMANDS;
 

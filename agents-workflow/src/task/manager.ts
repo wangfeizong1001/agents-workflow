@@ -81,6 +81,15 @@ export class TaskManager {
     return updated;
   }
 
+  public updateTask(id: string, partial: Partial<Omit<Task, "id" | "createdAt">>): Task {
+    const tasks = this.list();
+    const t = tasks.find((x) => x.id === id);
+    if (!t) throw new YunShouError("任务不存在", YSErrorCode.UNKNOWN, { id });
+    const updated: Task = { ...t, ...partial, id: t.id, createdAt: t.createdAt };
+    this.save(tasks.map((x) => (x.id === id ? updated : x)));
+    return updated;
+  }
+
   private save(tasks: readonly Task[]): void {
     writeFileAtomic(this.file, writeYaml({ tasks }));
   }

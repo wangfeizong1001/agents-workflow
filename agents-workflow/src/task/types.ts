@@ -46,6 +46,13 @@ export interface Task {
   readonly startedAt?: string;
   readonly completedAt?: string;
   readonly tags?: readonly string[];
+  readonly assignee?: string;
+  readonly blocks?: readonly string[];
+  readonly parentId?: string;
+  readonly subtaskIds?: readonly string[];
+  readonly estimateMin?: number;
+  readonly actualMin?: number;
+  readonly due?: string;
   readonly [extra: string]: unknown;
 }
 

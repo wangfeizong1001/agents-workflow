@@ -20,6 +20,7 @@
 import { Command } from "commander";
 import { initCommand } from "./commands/init.js";
 import { statusCommand } from "./commands/status.js";
+import { specCommand } from "./commands/spec.js";
 import type { CliContext } from "./types.js";
 import { EXIT_OK } from "./types.js";
 import { VERSION } from "../../index.js";
@@ -30,6 +31,7 @@ import { YunShouError } from "../../shared/errors.js";
 const COMMANDS = {
   [initCommand.name]: initCommand,
   [statusCommand.name]: statusCommand,
+  [specCommand.name]: specCommand,
 } as const;
 type CommandName = keyof typeof COMMANDS;
 

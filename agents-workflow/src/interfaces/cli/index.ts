@@ -21,7 +21,9 @@ import { Command } from "commander";
 import { initCommand } from "./commands/init.js";
 import { statusCommand } from "./commands/status.js";
 import type { CliContext } from "./types.js";
+import { EXIT_OK } from "./types.js";
 import { VERSION } from "../../index.js";
+import { YunShouError } from "../../shared/errors.js";
 
 // 子命令注册表 — 手写 dispatch 的单一事实源
 // 后续任务 18+ (spec/plan/execute/verify 子命令) 在此追加即可
@@ -39,42 +41,55 @@ export async function runCli(args: readonly string[], cwd: string): Promise<numb
     stderr: (s) => process.stderr.write(s),
   };
 
-  if (args[0] === "--version" || args[0] === "-v") {
-    process.stdout.write(`${VERSION}\n`);
-    return 0;
+  const sub = args[0];
+  if (!sub) {
+    // 空 args → 显示 help 后正常退出
+    showHelp();
+    return EXIT_OK;
   }
 
-  // 用 commander 渲染 --help 文本 (v0.1 暂时只支持 program 级 help)
-  if (args[0] === "--help" || args[0] === "-h" || args.length === 0) {
-    const program = new Command();
-    program
-      .name("yunshou")
-      .description("云枢 —— AI 编程工作流框架")
-      .version(VERSION);
-    for (const cmd of Object.values(COMMANDS)) {
-      program.command(cmd.name).description(cmd.description);
-    }
-    // 默认 outputHelp 走 stdout, 无 ctx 注入
-    program.outputHelp();
-    return 0;
+  if (sub === "--version" || sub === "-v") {
+    process.stdout.write(`${VERSION}\n`);
+    return EXIT_OK;
+  }
+
+  if (sub === "--help" || sub === "-h") {
+    showHelp();
+    return EXIT_OK;
   }
 
   // 手写 dispatch: 路由到子命令 handler
-  // 上面 if 已排除 --version/--help/空 args 三种情况, sub 在此分支必为 string
-  const sub = args[0] as string;
   if (sub in COMMANDS) {
-    // in 守卫后, COMMANDS[sub] 仍被 noUncheckedIndexedAccess 标为可能 undefined
-    // (TS 不会跨索引边界 narrowing Record), 显式二次 null check
     const cmd = COMMANDS[sub as CommandName];
     if (!cmd) {
       ctx.stderr(`错误: 未知命令 "${sub}"。运行 \`yunshou --help\` 查看可用命令\n`);
       return 1;
     }
-    return await cmd.handler(ctx);
+    try {
+      return await cmd.handler(ctx);
+    } catch (err) {
+      const ys = YunShouError.from(err);
+      ctx.stderr(`错误: ${ys.message}\n`);
+      // YunShouError.context 可能携带 exitCode（如 status 未初始化返回 2）
+      const ec = (ys.context as Record<string, unknown>)["exitCode"];
+      return typeof ec === "number" ? ec : 1;
+    }
   }
 
   ctx.stderr(`错误: 未知命令 "${sub}"。运行 \`yunshou --help\` 查看可用命令\n`);
   return 1;
+}
+
+function showHelp(): void {
+  const program = new Command();
+  program
+    .name("yunshou")
+    .description("云枢 —— AI 编程工作流框架")
+    .version(VERSION);
+  for (const cmd of Object.values(COMMANDS)) {
+    program.command(cmd.name).description(cmd.description);
+  }
+  program.outputHelp();
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

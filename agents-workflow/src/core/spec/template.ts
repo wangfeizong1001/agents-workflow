@@ -45,6 +45,10 @@ export function renderSpecTemplate(input: SpecTemplateInput): string {
     }
   }
   return TEMPLATE.replace(/\{\{(\w+)\}\}/g, (_, key: string) => {
+    // 双重 as: SpecTemplateInput 是 interface (编译期擦除),不能直接索引 string。
+    // 先用 unknown 绕过 TS 的结构类型检查,再用 Record<string, string> 允许任意键索引。
+    // 运行时只要 key 正好是 SpecTemplateInput 的字段名即安全 —— 模板中 {{key}} 不会
+    // 出现不在 input 中的占位符(维护者保证)。
     const v = (input as unknown as Record<string, string>)[key];
     return v ?? "";
   });

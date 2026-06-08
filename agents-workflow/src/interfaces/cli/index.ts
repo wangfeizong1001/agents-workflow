@@ -24,6 +24,8 @@ import { specCommand } from "./commands/spec.js";
 import { planCommand } from "./commands/plan.js";
 import { executeCommand } from "./commands/execute.js";
 import { verifyCommand } from "./commands/verify.js";
+import { installCommand } from "./commands/install.js";
+import { uninstallCommand } from "./commands/uninstall.js";
 import type { CliContext } from "./types.js";
 import { EXIT_OK } from "./types.js";
 import { VERSION } from "../../index.js";
@@ -38,6 +40,8 @@ const COMMANDS = {
   [planCommand.name]: planCommand,
   [executeCommand.name]: executeCommand,
   [verifyCommand.name]: verifyCommand,
+  [installCommand.name]: installCommand,
+  [uninstallCommand.name]: uninstallCommand,
 } as const;
 type CommandName = keyof typeof COMMANDS;
 

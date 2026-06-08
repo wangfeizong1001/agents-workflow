@@ -26,10 +26,16 @@ import { executeCommand } from "./commands/execute.js";
 import { verifyCommand } from "./commands/verify.js";
 import { installCommand } from "./commands/install.js";
 import { uninstallCommand } from "./commands/uninstall.js";
-import type { CliContext } from "./types.js";
+import type { CliCommand, CliContext } from "./types.js";
 import { EXIT_OK } from "./types.js";
 import { VERSION } from "../../index.js";
 import { YunShouError } from "../../shared/errors.js";
+
+const MCP_COMMAND: CliCommand = {
+  name: "mcp",
+  description: "启动 MCP stdio 服务器 (供 IDE 集成)",
+  handler: () => 0,
+};
 
 // 子命令注册表 — 手写 dispatch 的单一事实源
 // 后续任务 18+ (spec/plan/execute/verify 子命令) 在此追加即可
@@ -42,6 +48,7 @@ const COMMANDS = {
   [verifyCommand.name]: verifyCommand,
   [installCommand.name]: installCommand,
   [uninstallCommand.name]: uninstallCommand,
+  [MCP_COMMAND.name]: MCP_COMMAND,
 } as const;
 type CommandName = keyof typeof COMMANDS;
 
@@ -67,6 +74,13 @@ export async function runCli(args: readonly string[], cwd: string): Promise<numb
 
   if (sub === "--help" || sub === "-h") {
     showHelp();
+    return EXIT_OK;
+  }
+
+  // mcp 子命令特殊处理: 长期阻塞的 stdio 服务器
+  if (sub === "mcp") {
+    const { runMcp } = await import("../mcp/server.js");
+    await runMcp(cwd);
     return EXIT_OK;
   }
 

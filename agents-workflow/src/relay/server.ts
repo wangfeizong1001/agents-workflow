@@ -1,5 +1,5 @@
 import { createServer } from "node:http";
-import { WebSocketServer, type WebSocket } from "ws";
+import { WebSocketServer, WebSocket } from "ws";
 
 interface Client {
   readonly id: string;

@@ -27,13 +27,12 @@ export class MemoryL2 {
         !batch.some((e) => !!(e as StateEvent & { compressed?: boolean }).compressed)
       ) {
         const tags = [...new Set(batch.map((e) => e.specId ?? e.planId ?? "").filter(Boolean))];
+        const last = tail[pos]!;
         const compressed: StateEvent & { compressed: boolean } = {
           id: randomUUID(),
           ts: new Date().toISOString(),
           session: "l2-compressor",
-          type: types[0],
-          specId: tail[pos].specId,
-          planId: tail[pos].planId,
+          type: types[0]!,
           data: {
             compressed: true,
             sourceCount: GROUP_SIZE,
@@ -41,6 +40,8 @@ export class MemoryL2 {
             tags,
           },
           compressed: true,
+          ...(last.specId !== undefined ? { specId: last.specId } : {}),
+          ...(last.planId !== undefined ? { planId: last.planId } : {}),
         };
         tail.splice(pos, GROUP_SIZE, compressed);
         compressedCount++;

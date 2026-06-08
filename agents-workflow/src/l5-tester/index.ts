@@ -41,5 +41,5 @@ export class L5Tester {
 }
 
 export function createTestReport(passed: boolean, error?: string): TestReport {
-  return { passed, stages: [], error };
+  return { passed, stages: [], ...(error !== undefined ? { error } : {}) };
 }

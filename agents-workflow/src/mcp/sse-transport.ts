@@ -83,7 +83,7 @@ export async function createSSEServer(cwd: string, port: number): Promise<void> 
 
       req.on("close", () => {
         sessions.delete(sessionId);
-        transport.close();
+        void transport.close();
       });
       return;
     }

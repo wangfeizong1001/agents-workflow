@@ -108,10 +108,10 @@ export async function runCli(args: readonly string[], cwd: string): Promise<numb
     const port = portFlag !== -1 && subArgs[portFlag + 1] ? Number(subArgs[portFlag + 1]) : 3100;
 
     if (transport === "ws") {
-      const { createWebSocketServer } = await import("../mcp/ws-transport.js");
+      const { createWebSocketServer } = await import("../../mcp/ws-transport.js");
       await createWebSocketServer(cwd, port);
     } else if (transport === "sse") {
-      const { createSSEServer } = await import("../mcp/sse-transport.js");
+      const { createSSEServer } = await import("../../mcp/sse-transport.js");
       await createSSEServer(cwd, port);
     } else {
       const { runMcp } = await import("../mcp/server.js");

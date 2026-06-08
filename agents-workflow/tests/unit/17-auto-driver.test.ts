@@ -5,8 +5,8 @@ vi.mock("node:child_process", () => ({
   execSync: vi.fn().mockReturnValue("所有任务已完成"),
 }));
 
-// Dynamic import to ensure mock is in place
-async function getAutoDriver(): Promise<typeof import("../../src/auto-driver/index.js")> {
+// 动态导入确保 mock 已就位
+async function getAutoDriver() {
   return import("../../src/auto-driver/index.js");
 }
 

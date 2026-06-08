@@ -37,6 +37,12 @@ const MCP_COMMAND: CliCommand = {
   handler: () => 0,
 };
 
+const WATCH_COMMAND: CliCommand = {
+  name: "watch",
+  description: "监视 .yunshou/ 文件变更并自动触发验证",
+  handler: () => 0,
+};
+
 // 子命令注册表 — 手写 dispatch 的单一事实源
 // 后续任务 18+ (spec/plan/execute/verify 子命令) 在此追加即可
 const COMMANDS = {
@@ -49,6 +55,7 @@ const COMMANDS = {
   [installCommand.name]: installCommand,
   [uninstallCommand.name]: uninstallCommand,
   [MCP_COMMAND.name]: MCP_COMMAND,
+  [WATCH_COMMAND.name]: WATCH_COMMAND,
 } as const;
 type CommandName = keyof typeof COMMANDS;
 
@@ -74,6 +81,21 @@ export async function runCli(args: readonly string[], cwd: string): Promise<numb
 
   if (sub === "--help" || sub === "-h") {
     showHelp();
+    return EXIT_OK;
+  }
+
+  // watch 子命令: 文件监视
+  if (sub === "watch") {
+    ctx.stdout("云枢文件监视器已启动 (Ctrl+C 停止)\n");
+    const { FileWatcher } = await import("../../watcher/index.js");
+    const w = new FileWatcher(cwd);
+    w.watch(["events.jsonl"], (events) => {
+      for (const e of events) {
+        ctx.stdout(`  [${e.type}] ${e.filePath}\n`);
+      }
+    });
+    // 保持进程运行
+    await new Promise(() => {});
     return EXIT_OK;
   }
 

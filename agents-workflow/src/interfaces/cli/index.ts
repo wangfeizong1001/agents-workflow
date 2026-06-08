@@ -33,7 +33,7 @@ import { YunShouError } from "../../shared/errors.js";
 
 const MCP_COMMAND: CliCommand = {
   name: "mcp",
-  description: "启动 MCP stdio 服务器 (供 IDE 集成)",
+  description: "启动 MCP 服务器。默认 stdio; --transport ws|sse --port 3100",
   handler: () => 0,
 };
 
@@ -77,10 +77,24 @@ export async function runCli(args: readonly string[], cwd: string): Promise<numb
     return EXIT_OK;
   }
 
-  // mcp 子命令特殊处理: 长期阻塞的 stdio 服务器
+  // mcp 子命令特殊处理: 长期阻塞的服务器 (stdio / ws / sse)
   if (sub === "mcp") {
-    const { runMcp } = await import("../mcp/server.js");
-    await runMcp(cwd);
+    const subArgs = args.slice(1);
+    const transportFlag = subArgs.indexOf("--transport");
+    const portFlag = subArgs.indexOf("--port");
+    const transport = transportFlag !== -1 && subArgs[transportFlag + 1] ? subArgs[transportFlag + 1] : "stdio";
+    const port = portFlag !== -1 && subArgs[portFlag + 1] ? Number(subArgs[portFlag + 1]) : 3100;
+
+    if (transport === "ws") {
+      const { createWebSocketServer } = await import("../mcp/ws-transport.js");
+      await createWebSocketServer(cwd, port);
+    } else if (transport === "sse") {
+      const { createSSEServer } = await import("../mcp/sse-transport.js");
+      await createSSEServer(cwd, port);
+    } else {
+      const { runMcp } = await import("../mcp/server.js");
+      await runMcp(cwd);
+    }
     return EXIT_OK;
   }
 

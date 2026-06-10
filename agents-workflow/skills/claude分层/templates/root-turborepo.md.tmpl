@@ -1,0 +1,22 @@
+# {{REPO_NAME}} CLAUDE.md
+
+## 技术栈
+- Turborepo + pnpm workspaces
+- 主要语言: {{PRIMARY_LANG}}
+- 全局命令: `pnpm turbo <task> --filter={{PKG_NAME}}`
+
+## 全局规则
+- 改动 `packages/*` 共享代码 → 必须跑 `pnpm turbo build typecheck test`
+- 新增 package → 在根 `package.json` 的 `workspaces` 数组登记
+- {{DEFAULT_BRANCH}} 分支受保护
+
+## 任务管道
+- `build` → `typecheck` → `lint` → `test`
+- 用 `pnpm turbo run <task>` 触发
+
+## 子目录索引
+{{SUBPACKAGE_INDEX}}
+
+## 反向链接
+- 上级: 无
+- 下级: 见"子目录索引"

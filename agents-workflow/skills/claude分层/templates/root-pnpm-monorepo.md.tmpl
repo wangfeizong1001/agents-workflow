@@ -1,0 +1,26 @@
+# {{REPO_NAME}} CLAUDE.md
+
+## 技术栈
+- 包管理: {{PKG_MANAGER}}
+- Monorepo 工具: {{MONOREPO_TOOL}}
+- 主要语言: {{PRIMARY_LANG}}
+- 测试: {{TEST_CMD}}
+- Lint: {{LINT_CMD}}
+
+## 全局规则
+- 所有改动走 PR，{{DEFAULT_BRANCH}} 受保护
+- 提交前跑 `{{PRECOMMIT_CMD}}`
+- 提交信息格式: `{{COMMIT_PREFIX}} 简述`
+
+## 子目录索引
+- `{{PKG1_PATH}}` — {{PKG1_DESC}}，见 {{PKG1_PATH}}/CLAUDE.md
+- `{{PKG2_PATH}}` — {{PKG2_DESC}}，见 {{PKG2_PATH}}/CLAUDE.md
+- `{{PKG3_PATH}}` — {{PKG3_DESC}}，见 {{PKG3_PATH}}/CLAUDE.md
+
+## 跨包改动
+涉及共享类型时先 `{{BUILD_TYPES_CMD}}`，再跑切片测试。
+
+## 反向链接
+- 上级: 无（根文件）
+- 同级: 无
+- 下级: 见"子目录索引"

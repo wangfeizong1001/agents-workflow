@@ -1,0 +1,12 @@
+---
+paths:
+  - "**/routes/**"
+  - "**/handlers/**"
+  - "**/controllers/**"
+  - "**/routers/**"
+content: |
+  - 路由文件命名：kebab-case（如 `user-profile.ts`）
+  - 导出方式：默认导出 Express/FastAPI 路由对象 / 具名导出函数
+  - 入参必须用 schema（Zod/Pydantic/Joi）校验，不内联
+  - 错误用统一 `ApiError` 形状，不在路由里 `res.status(500).send(...)` 散落
+  - 每个 handler 最多 50 行，复杂逻辑下沉到 services/

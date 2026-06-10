@@ -1,0 +1,21 @@
+# 云枢工作流配置
+# 所有路径通过此文件集中管理，修改一处全局生效
+
+# 项目根目录（自动检测 git 仓库根目录）
+PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+
+# 工作流产物输出目录
+WORKFLOW_OUTPUT_DIR="$PROJECT_ROOT/workflow-output"
+
+# 状态/配置目录（全局共享）
+STATE_DIR="$HOME/.opencode"
+
+# 自动升级开关（留空=关闭）
+AUTO_UPGRADE=""
+
+# 适配器目标目录映射
+ADAPTER_OPENDCODE_DIR="$STATE_DIR/skills"
+ADAPTER_CLAUDE_DIR="$HOME/.claude/skills"
+ADAPTER_CURSOR_DIR=".cursor/rules"
+ADAPTER_TRAE_DIR=".trae/rules"
+ADAPTER_CODEBUDDY_DIR=".codebuddy/rules"

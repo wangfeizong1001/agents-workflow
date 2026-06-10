@@ -1,0 +1,10 @@
+---
+paths:
+  - "**/*.tsx"
+  - "**/*.jsx"
+content: |
+  - 函数组件必须显式声明 props 类型，禁止 `React.FC`
+  - 禁止 default export，统一 named export
+  - 副作用统一放 `useEffect`，依赖数组必须完整
+  - 事件处理函数以 `handle` 前缀命名（`handleClick`）
+  - 大列表用 `react-window` 或 `react-virtuoso` 虚拟化

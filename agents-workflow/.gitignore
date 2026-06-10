@@ -8,3 +8,6 @@ coverage
 .idea
 .tsbuildinfo
 *.tsbuildinfo
+
+# MCP 配置（包含密钥，禁止提交）
+.mcp.json

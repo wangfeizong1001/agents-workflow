@@ -1,0 +1,12 @@
+---
+paths:
+  - "**/migrations/**"
+  - "**/prisma/migrations/**"
+  - "**/alembic/versions/**"
+  - "**/db/migrate/**"
+content: |
+  - 迁移文件不可重命名/删除/重排
+  - 一次提交只包含一个迁移
+  - 破坏性变更（DROP/RENAME）必须配套 forward + backfill
+  - 大表 ALTER 必须用 expand-contract 模式
+  - 修改迁移前确认环境状态：本地 / staging / production

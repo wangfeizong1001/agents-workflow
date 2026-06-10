@@ -1,0 +1,17 @@
+# iOS Target: {{TARGET_NAME}} CLAUDE.md
+
+## 范围
+iOS app target: `{{TARGET_NAME}}`
+
+## 约定
+- 最低 iOS: {{DEPLOYMENT_TARGET}}
+- Swift 严格并发: {{STRICT_CONCURRENCY}}
+- 不使用 Storyboard，纯 SwiftUI / UIKit by code
+
+## 命令
+- 构建: `xcodebuild -scheme {{SCHEME}} -destination 'platform=iOS Simulator,name=iPhone 15' build`
+- 测试: `xcodebuild -scheme {{SCHEME}} test`
+- Lint:  `swiftlint`
+
+## 反向链接
+- 上级: `../CLAUDE.md`

@@ -26,6 +26,9 @@ import { executeCommand } from "./commands/execute.js";
 import { verifyCommand } from "./commands/verify.js";
 import { installCommand } from "./commands/install.js";
 import { uninstallCommand } from "./commands/uninstall.js";
+import { workflowCommand } from "./commands/workflow.js";
+import { skillsCommand } from "./commands/skills.js";
+import { agentsCmdCommand } from "./commands/agents-cmd.js";
 import type { CliCommand, CliContext } from "./types.js";
 import { EXIT_OK } from "./types.js";
 import { VERSION } from "../../index.js";
@@ -54,6 +57,9 @@ const COMMANDS = {
   [verifyCommand.name]: verifyCommand,
   [installCommand.name]: installCommand,
   [uninstallCommand.name]: uninstallCommand,
+  [workflowCommand.name]: workflowCommand,
+  [skillsCommand.name]: skillsCommand,
+  [agentsCmdCommand.name]: agentsCmdCommand,
   [MCP_COMMAND.name]: MCP_COMMAND,
   [WATCH_COMMAND.name]: WATCH_COMMAND,
 } as const;

@@ -1,0 +1,887 @@
+{
+
+  "mcpServers": {
+
+    "github": {
+
+      "command": "cmd",
+
+      "args": [
+
+        "/c",
+
+        "npx",
+
+        "-y",
+
+        "@modelcontextprotocol/server-github"
+
+      ],
+
+      "env": {
+
+"GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_TOKEN_HERE"
+
+      },
+
+      "autoApprove": [],
+
+      "description": "GitHub 仓库管理 - 代码托管、PR、Issue 管理"
+
+    },
+
+    "sequential-thinking": {
+
+      "command": "cmd",
+
+      "args": [
+
+        "/c",
+
+        "npx",
+
+        "-y",
+
+        "@modelcontextprotocol/server-sequential-thinking"
+
+      ],
+
+      "disabled": false,
+
+      "autoApprove": [
+
+        "sequential_thinking",
+
+        "sequentialthinking"
+
+      ],
+
+      "description": "顺序思维工具 - 处理复杂问题的结构化思考"
+
+    },
+
+    "time-mcp": {
+
+      "command": "cmd",
+
+      "args": [
+
+        "/c",
+
+        "npx",
+
+        "-y",
+
+        "time-mcp"
+
+      ],
+
+      "timeout": 60,
+
+      "disabled": false,
+
+      "description": "时间工具 - 时间转换、时区处理、日期计算",
+
+      "autoApprove": [
+
+        "current_time",
+
+        "current_time"
+
+      ]
+
+    },
+
+    "browser-tools-mcp": {
+
+      "command": "cmd",
+
+      "args": [
+
+        "/c",
+
+        "npx",
+
+        "-y",
+
+        "@agentdeskai/browser-tools-mcp@1.2.0"
+
+      ],
+
+      "disabled": true,
+
+      "description": "浏览器工具 - 调试、性能审计、SEO 分析、可访问性检查",
+
+      "autoApprove": [
+
+        "getConsoleErrors",
+
+        "getNetworkErrors"
+
+      ]
+
+    },
+
+    "filesystem": {
+
+      "command": "cmd",
+
+      "args": [
+
+        "/c",
+
+        "npx",
+
+        "-y",
+
+        "@modelcontextprotocol/server-filesystem",
+
+        "U:\\新建文件夹 (2)\\2026-1-6"
+
+      ],
+
+      "disabled": true,
+
+      "description": "文件系统访问 - 云枢导航项目文件读写操作（当前工作目录）",
+
+      "autoApprove": [
+
+        "read_text_file",
+
+        "list_allowed_directories",
+
+        "create_directory",
+
+        "create_directory",
+
+        "create_directory",
+
+        "move_file",
+
+        "directory_tree",
+
+        "directory_tree",
+
+        "read_multiple_files",
+
+        "edit_file",
+
+        "edit_file",
+
+        "edit_file",
+
+        "search_files",
+
+        "search_files",
+
+        "search_files",
+
+        "search_files",
+
+        "list_directory",
+
+        "write_file",
+
+        "get_file_info"
+
+      ]
+
+    },
+
+    "sqlite": {
+
+      "command": "cmd",
+
+      "args": [
+
+        "/c",
+
+        "npx",
+
+        "-y",
+
+        "@modelcontextprotocol/server-sqlite",
+
+        "--db-path",
+
+        "./database.db"
+
+      ],
+
+      "disabled": true,
+
+      "description": "SQLite 数据库 - 本地数据库操作（需要时启用）"
+
+    },
+
+    "fetch": {
+
+      "command": "cmd",
+
+      "args": [
+
+        "/c",
+
+        "npx",
+
+        "-y",
+
+        "@wordbricks/fetch-mcp"
+
+      ],
+
+      "disabled": false,
+
+      "description": "网络请求 - HTTP 请求（GET/POST/PUT/DELETE/PATCH 等）、网页数据抓取",
+
+      "autoApprove": [
+
+        "fetch"
+
+      ],
+
+      "timeout": 60000,
+
+      "env": {
+
+        "HTTP_TIMEOUT": "30000",
+
+        "RETRY_TIMES": "2"
+
+      }
+
+    },
+
+    "git": {
+
+      "command": "cmd",
+
+      "args": [
+
+        "/c",
+
+        "npx",
+
+        "-y",
+
+        "@cyanheads/git-mcp-server"
+
+    ],
+
+      "description": "Git 版本控制 - 完整的 Git 操作",
+
+      "autoApprove": [
+
+        "git_status",
+
+        "git_log",
+
+        "git_diff",
+
+        "git_branch",
+
+        "git_add",
+
+        "git_set_working_dir",
+
+        "git_commit",
+
+        "git_reset"
+
+      ],
+
+      "env": {
+
+        "GIT_DEFAULT_PATH": "U:\\新建文件夹 (2)\\2026-1-6\\",
+
+        "GIT_AUTHOR_NAME": "wangfeizong",
+
+        "GIT_AUTHOR_EMAIL": "760717634@qq.com"
+
+    }
+
+    },
+
+    "memory": {
+
+      "command": "npx",
+
+      "args": [
+
+        "-y",
+
+        "@modelcontextprotocol/server-memory@0.6.2"
+
+      ],
+
+      "env": {
+
+        "MEMORY_FILE_PATH": "U:\\新建文件夹 (2)\\2026-1-6\\.kiro\\settings\\memory.json"
+
+      },
+
+      "disabled": false,
+
+      "description": "内存存储 - 会话间的知识保存和检索",
+
+      "autoApprove": [
+
+        "read_graph",
+
+        "search_nodes",
+
+        "open_nodes",
+
+        "create_entities",
+
+        "create_relations",
+
+        "add_observations"
+
+      ]
+
+    },
+
+    "everything": {
+
+      "command": "cmd",
+
+      "args": [
+
+        "/c",
+
+        "npx",
+
+        "-y",
+
+        "@modelcontextprotocol/server-everything"
+
+      ],
+
+      "disabled": true,
+
+      "description": "Everything - MCP 功能演示和测试服务器"
+
+    },
+
+    "everything-search": {
+
+      "command": "cmd",
+
+      "args": [
+
+        "/c",
+
+        "npx",
+
+        "-y",
+
+        "everything-mcp"
+
+      ],
+
+      "env": {
+
+        "ES_PATH": "C:\\Program Files\\Everything\\es.exe"
+
+      },
+
+      "disabled": false,
+
+      "description": "Everything 文件搜索 - 快速搜索本地文件（Windows Everything 集成）",
+
+      "autoApprove": [
+
+        "everything_search",
+
+        "everything_search",
+
+        "everything_search",
+
+        "everything_search"
+
+      ]
+
+    },
+
+    "postgres": {
+
+      "command": "cmd",
+
+      "args": [
+
+        "/c",
+
+        "npx",
+
+        "-y",
+
+        "@modelcontextprotocol/server-postgres",
+
+        "postgresql://username:password@localhost:5432/database"
+
+      ],
+
+      "disabled": true,
+
+      "description": "PostgreSQL - 关系型数据库操作（需要配置连接字符串）"
+
+    },
+
+    "sentry": {
+
+      "command": "cmd",
+
+      "args": [
+
+        "/c",
+
+        "npx",
+
+        "-y",
+
+        "@weekit/mcp-sentry"
+
+      ],
+
+      "env": {
+
+        "SENTRY_TOKEN": "your_sentry_auth_token_here"
+
+      },
+
+      "disabled": true,
+
+      "description": "Sentry - 错误追踪和监控，获取错误报告和堆栈跟踪（需要 Auth Token）"
+
+    },
+
+    "mongodb-lens": {
+
+      "command": "cmd",
+
+      "args": [
+
+        "/c",
+
+        "npx",
+
+        "-y",
+
+        "mongodb-lens",
+
+        "mongodb://localhost:27017"
+
+    ],
+
+      "description": "MongoDB Lens - 全功能 MongoDB 客户端（30+ 工具：查询、聚合、优化、schema 对比等）",
+
+      "autoApprove": [
+
+        "use-database",
+
+        "find-documents",
+
+        "list-collections",
+
+        "count-documents",
+
+        "count-documents",
+
+        "count-documents",
+
+        "count-documents",
+
+        "count-documents",
+
+        "list-databases",
+
+        "update-document",
+
+        "delete-document",
+
+        "distinct-values",
+
+        "connect-mongodb",
+
+        "get-stats",
+
+        "aggregate-data",
+
+        "analyze-schema",
+
+        "create-index",
+
+        "drop-index",
+
+        "explain-query"
+
+      ]
+
+    },
+
+    "redis": {
+
+      "command": "cmd",
+
+      "args": [
+
+        "/c",
+
+        "npx",
+
+        "-y",
+
+        "@gongrzhe/server-redis-mcp",
+
+        "redis://localhost:6379"
+
+    ],
+
+      "description": "Redis - 缓存数据库操作（GET/SET/DEL/KEYS/HGET/HSET/LPUSH/RPUSH等）",
+
+      "autoApprove": [
+
+        "list",
+
+        "delete",
+
+        "get"
+
+      ],
+
+      "disabled": true
+
+    },
+
+    "docker": {
+
+      "command": "cmd",
+
+      "args": [
+
+        "/c",
+
+        "npx",
+
+        "-y",
+
+        "mcp-server-docker"
+
+      ],
+
+      "disabled": true,
+
+      "description": "Docker - 容器管理和镜像操作"
+
+    },
+
+    "raycast": {
+
+      "command": "cmd",
+
+      "args": [
+
+        "/c",
+
+        "npx",
+
+        "-y",
+
+        "@raycast/mcp-server-raycast"
+
+      ],
+
+      "disabled": true,
+
+      "description": "Raycast - 生产力工具集成（需要时启用）"
+
+    },
+
+    "evernote": {
+
+      "command": "D:/印象笔记MCP/venv/Scripts/python.exe",
+
+      "args": [
+
+        "C:/Users/Administrator/Desktop/印象笔记MCP/main.py"
+
+      ],
+
+      "env": {
+
+        "EVERNOTE_DEVELOPER_TOKEN": "YOUR_EVERNOTE_TOKEN_HERE",
+
+        "PYTHONPATH": "D:\\印象笔记MCP",
+
+        "EVERNOTE_SANDBOX": "false",
+
+        "EVERNOTE_SERVER": "china"
+
+      },
+
+      "disabled": true,
+
+      "description": "印象笔记 - 笔记管理和知识库"
+
+    },
+
+    "context7": {
+
+      "command": "npx",
+
+      "args": [
+
+        "-y",
+
+        "@upstash/context7-mcp@latest"
+
+      ],
+
+      "disabled": false,
+
+      "description": "Context7 - 获取最新库/框架文档和代码示例",
+
+      "autoApprove": [
+
+        "resolve-library-id",
+
+        "query-docs"
+
+      ]
+
+    },
+
+    "chrome-devtools": {
+
+      "command": "npx",
+
+      "args": [
+
+        "-y",
+
+        "chrome-devtools-mcp"
+
+    ],
+
+      "env": {
+
+        "CHROME_EXECUTABLE_PATH": "",
+
+        "HEADLESS": "false"
+
+    },
+
+      "description": "Chrome DevTools - 浏览器调试和自动化"
+
+    },
+
+    "interactive-feedback": {
+
+      "command": "npx",
+
+      "args": [
+
+        "-y",
+
+        "@iflow-mcp/interactive-feedback-mcp-nodejs"
+
+      ],
+
+      "disabled": false,
+
+      "description": "交互式反馈 - AI与用户实时交互问答"
+
+    },
+
+    "playwright": {
+
+      "command": "npx",
+
+      "args": [
+
+        "@playwright/mcp@latest",
+
+        "--browser",
+
+        "chrome"
+
+      ],
+
+      "description": "Playwright 浏览器自动化 - E2E测试、截图、代码生成、页面抓取",
+
+      "autoApprove": [
+
+        "browser_navigate",
+
+        "browser_screenshot",
+
+        "browser_click",
+
+        "browser_type",
+
+        "browser_wait",
+
+        "browser_wait_for",
+
+        "browser_snapshot",
+
+        "browser_take_screenshot",
+
+        "browser_evaluate",
+
+        "browser_fill_form",
+
+        "browser_press_key"
+
+      ],
+
+      "fromGalleryId": "executeautomation.mcp-playwright"
+
+    },
+
+    "openapi": {
+
+      "command": "npx",
+
+      "args": [
+
+        "-y",
+
+        "@kadykov/mcp-openapi-schema-explorer"
+
+      ],
+
+      "env": {
+
+        "OPENAPI_SPEC_PATH": "./backend/docs/openapi.yaml"
+
+      },
+
+      "disabled": true,
+
+      "description": "OpenAPI/Swagger - API文档浏览和生成（需要配置OpenAPI规范文件路径）"
+
+    },
+
+    "postman": {
+
+      "command": "npx",
+
+      "args": [
+
+        "-y",
+
+        "mcp-postman"
+
+      ],
+
+      "env": {
+
+        "POSTMAN_COLLECTION_PATH": "./postman"
+
+      },
+
+      "disabled": true,
+
+      "description": "Postman - API测试集合管理，使用Newman运行测试（需要Postman集合文件）"
+
+    },
+
+    "sonarqube": {
+
+      "command": "npx",
+
+      "args": [
+
+        "-y",
+
+        "sonarqube-mcp-server"
+
+      ],
+
+      "env": {
+
+        "SONARQUBE_URL": "http://localhost:9000",
+
+        "SONARQUBE_TOKEN": "your_sonarqube_token_here"
+
+      },
+
+      "disabled": true,
+
+      "description": "SonarQube - 代码质量分析、技术债务追踪、安全漏洞检测（需要SonarQube服务器）"
+
+    },
+
+    "typescript": {
+
+      "command": "npx",
+
+      "args": [
+
+        "-y",
+
+        "typescript-mcp"
+
+      ],
+
+      "disabled": false,
+
+      "description": "TypeScript - 类型检查、重构、代码分析、类型定义查询",
+
+      "autoApprove": [
+
+        "check_typescript",
+
+        "get_type_definition",
+
+        "find_references",
+
+        "move_directory",
+
+        "move_file",
+
+        "get_diagnostics",
+
+        "get_diagnostics"
+
+      ]
+
+    },
+
+    "youdao-note": {
+
+      "disabled": true,
+
+      "autoApprove": [],
+
+      "url": "https://open.mail.163.com/api/ynote/mcp/sse",
+
+      "headers": {
+
+"x-api-key": "YOUR_YOUDAO_API_KEY_HERE"
+
+      }
+
+    },
+
+    "youdaonote": {
+
+      "url": "http://localhost:3001/sse",
+
+      "headers": {
+
+"x-api-key": "YOUR_YOUDAO_API_KEY_HERE"
+
+      },
+
+      "disabled": true
+
+    }
+
+  }
+
+}
+
+帮我将这些  mcp 配置到云端和本地环境

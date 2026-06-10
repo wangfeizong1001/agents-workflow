@@ -1,0 +1,13 @@
+# {{REPO_NAME}} CLAUDE.md
+
+## 技术栈
+- Go {{GO_VERSION}}+
+- workspace 模式（多 module）
+
+## 全局规则
+- workspace 成员在 `go.work`
+- 公共 lint: `golangci-lint run ./...`
+- 提交前: `go vet ./... && go test ./...`
+
+## 子目录索引
+{{SUBPACKAGE_INDEX}}

@@ -1,0 +1,24 @@
+# Next.js App: {{APP_NAME}} CLAUDE.md
+
+## 范围
+Next.js 15 App Router。Server Component 默认；Client Component 必须显式 `"use client"`。
+
+## 约定
+- 样式: Tailwind v4
+- 服务端状态: TanStack Query
+- 客户端状态: Zustand
+- API: 统一走 `src/lib/api.ts`
+
+## 命令
+- 开发: `{{DEV_CMD}}`
+- 测:   `{{TEST_CMD}}`
+- 构建: `{{BUILD_CMD}}`
+
+## 注意事项
+- 不要在 Client Component 写 fetch
+- 新增路由必须同步更新 `src/i18n/`
+- `next.config.ts` 受限改动，需 review
+
+## 反向链接
+- 上级: `../CLAUDE.md`
+- 下级: 按需（如 `app/dashboard/CLAUDE.md`）

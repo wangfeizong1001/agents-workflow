@@ -1,0 +1,16 @@
+# {{REPO_NAME}} CLAUDE.md
+
+## 技术栈
+- Nx {{NX_VERSION}}+ monorepo
+- 主要语言: {{PRIMARY_LANG}}
+
+## 全局规则
+- 任务依赖图在 {{WORKSPACE_DIR}}/project.json
+- 新增 lib/app: `npx nx g @nx/{{TOOLCHAIN}}:lib <name>`
+- 受影响检测: `npx nx affected:lint --base={{DEFAULT_BRANCH}}`
+
+## 子目录索引
+{{SUBPACKAGE_INDEX}}
+
+## 反向链接
+- 下级: 见"子目录索引"

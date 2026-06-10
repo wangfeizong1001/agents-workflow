@@ -1,0 +1,16 @@
+# {{REPO_NAME}} CLAUDE.md
+
+## 技术栈
+- Python {{PY_VERSION}} + Poetry
+- 主要框架: {{FRAMEWORK}}
+
+## 全局规则
+- 依赖管理: `poetry add` / `poetry add -D`
+- 提交前跑 `poetry run pytest && poetry run ruff check .`
+- Python 版本由 `pyproject.toml [tool.poetry.dependencies]` 锁定
+
+## 子目录索引
+{{SUBPACKAGE_INDEX}}
+
+## 反向链接
+- 下级: 见"子目录索引"

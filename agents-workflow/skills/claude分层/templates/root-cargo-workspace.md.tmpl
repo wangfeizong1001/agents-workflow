@@ -1,0 +1,13 @@
+# {{REPO_NAME}} CLAUDE.md
+
+## 技术栈
+- Rust stable + Cargo workspace
+- edition: {{RUST_EDITION}}
+
+## 全局规则
+- workspace 成员在根 `Cargo.toml [workspace] members`
+- 提交前: `cargo fmt --check && cargo clippy -- -D warnings && cargo test`
+- MSRV 在 `rust-toolchain.toml`
+
+## 子目录索引
+{{SUBPACKAGE_INDEX}}

@@ -1,0 +1,11 @@
+---
+paths:
+  - "**/*.test.*"
+  - "**/*.spec.*"
+  - "**/*_test.*"
+content: |
+  - 测试文件与源码同目录：`foo.ts` → `foo.test.ts`
+  - 命名：行为描述而非方法名（`should reject when email invalid`）
+  - 不依赖真实时间/网络，必须 mock
+  - 集成测试放 `tests/integration/`，单测放源码旁
+  - 覆盖率门槛: 关键模块 80%+，其他 60%+
